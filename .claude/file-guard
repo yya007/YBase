@@ -1,0 +1,24 @@
+# .claude/file-guard — sensitive file protection list
+# One pattern per line. .claude/hooks/file-guard.py (PreToolUse hook) blocks Write/Edit
+# on any file path containing a match.
+# Blank lines and lines starting with # are ignored.
+
+# Environment and secrets
+.env
+.env.local
+.env.production
+.env.staging
+credentials
+secrets
+
+# Certificates and keys
+.pem
+.key
+.p12
+.pfx
+
+# Production config (common patterns)
+settings.Production.json
+settings.Staging.json
+appsettings.Production.json
+appsettings.Staging.json

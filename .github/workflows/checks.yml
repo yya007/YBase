@@ -1,0 +1,42 @@
+name: checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  checks:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.10", "3.13"]
+    name: checks (${{ matrix.os }}, Python ${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    env:
+      # uv run uses the matrix interpreter; python3 on PATH comes from setup-python.
+      UV_PYTHON: ${{ matrix.python-version }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0  # the leaks check reads commit messages back to .leaks-baseline
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - name: Profile detection tests (bash 3.2 compatible)
+        run: /bin/bash tests/test_profile.sh
+      - name: Tests
+        run: uv run --extra dev pytest -q
+      - name: Lint
+        run: uv run --extra dev ruff check .
+      - name: Setup (unattended)
+        run: /bin/bash bin/ybase setup --non-interactive
+      - name: Doctor (dry run)
+        run: /bin/bash bin/ybase doctor --dry-run
+      - name: Check registry
+        run: python3 tools/checks.py

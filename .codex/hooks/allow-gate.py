@@ -1,0 +1,1 @@
+../../.claude/hooks/allow-gate.py

@@ -1,0 +1,166 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "h=\"$CLAUDE_PROJECT_DIR/.claude/hooks/allow-gate.py\"; [ -f \"$h\" ] || h=\"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/hooks/allow-gate.py\"; [ -f \"$h\" ] || exit 0; cd \"${h%/.claude/hooks/allow-gate.py}\" || exit 0; python3 \"$h\"; [ $? = 2 ] && exit 2; exit 0"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "h=\"$CLAUDE_PROJECT_DIR/.claude/hooks/file-guard.py\"; [ -f \"$h\" ] || h=\"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/hooks/file-guard.py\"; [ -f \"$h\" ] || exit 0; python3 \"$h\"; [ $? = 2 ] && exit 2; exit 0"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|Glob|Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "h=\"$CLAUDE_PROJECT_DIR/.claude/hooks/filesystem_scan_hook.py\"; [ -f \"$h\" ] || h=\"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/hooks/filesystem_scan_hook.py\"; [ -f \"$h\" ] || exit 0; python3 \"$h\"; [ $? = 2 ] && exit 2; exit 0",
+            "timeout": 20
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "h=\"$CLAUDE_PROJECT_DIR/.claude/hooks/self_matching_pgrep_hook.py\"; [ -f \"$h\" ] || h=\"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/hooks/self_matching_pgrep_hook.py\"; [ -f \"$h\" ] || exit 0; python3 \"$h\"; [ $? = 2 ] && exit 2; exit 0",
+            "timeout": 20
+          },
+          {
+            "type": "command",
+            "command": "h=\"$CLAUDE_PROJECT_DIR/.claude/hooks/zsh_word_split_hook.py\"; [ -f \"$h\" ] || h=\"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/hooks/zsh_word_split_hook.py\"; [ -f \"$h\" ] || exit 0; python3 \"$h\"; [ $? = 2 ] && exit 2; exit 0",
+            "timeout": 20
+          },
+          {
+            "type": "command",
+            "command": "h=\"$CLAUDE_PROJECT_DIR/.claude/hooks/python_floor_hook.py\"; [ -f \"$h\" ] || h=\"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/hooks/python_floor_hook.py\"; [ -f \"$h\" ] || exit 0; python3 \"$h\"; [ $? = 2 ] && exit 2; exit 0",
+            "timeout": 20
+          },
+          {
+            "type": "command",
+            "command": "h=\"$CLAUDE_PROJECT_DIR/.claude/hooks/pr_draft_hook.py\"; [ -f \"$h\" ] || h=\"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/hooks/pr_draft_hook.py\"; [ -f \"$h\" ] || exit 0; python3 \"$h\"; [ $? = 2 ] && exit 2; exit 0",
+            "timeout": 20
+          },
+          {
+            "type": "command",
+            "command": "h=\"$CLAUDE_PROJECT_DIR/.claude/hooks/leak_hook.py\"; [ -f \"$h\" ] || h=\"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/hooks/leak_hook.py\"; [ -f \"$h\" ] || exit 0; python3 \"$h\"; [ $? = 2 ] && exit 2; exit 0",
+            "timeout": 20
+          },
+          {
+            "type": "command",
+            "command": "h=\"$CLAUDE_PROJECT_DIR/.claude/hooks/git_write_in_pipeline_hook.py\"; [ -f \"$h\" ] || h=\"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/hooks/git_write_in_pipeline_hook.py\"; [ -f \"$h\" ] && python3 \"$h\"; exit 0",
+            "timeout": 20
+          },
+          {
+            "type": "command",
+            "command": "h=\"$CLAUDE_PROJECT_DIR/.claude/hooks/moment_law_hook.py\"; [ -f \"$h\" ] || h=\"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/hooks/moment_law_hook.py\"; [ -f \"$h\" ] || exit 0; python3 \"$h\"; [ $? = 2 ] && exit 2; exit 0",
+            "timeout": 20
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "h=\"$CLAUDE_PROJECT_DIR/.claude/hooks/readonly_checkout_hook.py\"; [ -f \"$h\" ] || h=\"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/hooks/readonly_checkout_hook.py\"; [ -f \"$h\" ] || exit 0; python3 \"$h\"; [ $? = 2 ] && exit 2; exit 0",
+            "timeout": 20
+          },
+          {
+            "type": "command",
+            "command": "h=\"$CLAUDE_PROJECT_DIR/.claude/hooks/moment_law_hook.py\"; [ -f \"$h\" ] || h=\"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/hooks/moment_law_hook.py\"; [ -f \"$h\" ] || exit 0; python3 \"$h\"; [ $? = 2 ] && exit 2; exit 0",
+            "timeout": 20
+          }
+        ]
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "h=\"$CLAUDE_PROJECT_DIR/.claude/hooks/moment_law_hook.py\"; [ -f \"$h\" ] || h=\"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/hooks/moment_law_hook.py\"; [ -f \"$h\" ] || exit 0; python3 \"$h\"; [ $? = 2 ] && exit 2; exit 0",
+            "timeout": 20
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "h=\"$CLAUDE_PROJECT_DIR/.claude/hooks/writing_style_hook.py\"; [ -f \"$h\" ] || h=\"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/hooks/writing_style_hook.py\"; [ -f \"$h\" ] && python3 \"$h\"; exit 0",
+            "timeout": 20
+          }
+        ]
+      },
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "h=\"$CLAUDE_PROJECT_DIR/.claude/hooks/tool_load_hook.py\"; [ -f \"$h\" ] || h=\"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/hooks/tool_load_hook.py\"; [ -f \"$h\" ] && python3 \"$h\"; exit 0",
+            "timeout": 20
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "h=\"$CLAUDE_PROJECT_DIR/.claude/hooks/session_end_distil_hook.py\"; [ -f \"$h\" ] || h=\"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/hooks/session_end_distil_hook.py\"; [ -f \"$h\" ] && python3 \"$h\"; exit 0",
+            "timeout": 20
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(pwd)",
+      "Bash(ls)",
+      "Bash(ls *)",
+      "Bash(wc *)",
+      "Bash(which *)",
+      "Bash(git status)",
+      "Bash(git diff)",
+      "Bash(git log)",
+      "Bash(git show)",
+      "Bash(git branch --show-current)",
+      "Bash(git remote -v)",
+      "Bash(git rev-parse *)",
+      "Bash(git ls-files)",
+      "Bash(git ls-files *)",
+      "Bash(python3 tools/checks.py)",
+      "Bash(python3 tools/checks.py *)",
+      "Bash(bin/ybase check)",
+      "Bash(bin/ybase check *)",
+      "Bash(bin/ybase doctor --dry-run)",
+      "Bash(bin/ybase repos)",
+      "Bash(bin/ybase kb)",
+      "Bash(bin/ybase profile)",
+      "Bash(bin/ybase env)",
+      "Bash(ybase check)",
+      "Bash(ybase check *)",
+      "Bash(ybase doctor --dry-run)",
+      "Bash(ybase repos)",
+      "Bash(ybase kb)",
+      "Bash(ybase profile)",
+      "Bash(ybase env)"
+    ]
+  }
+}

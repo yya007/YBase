@@ -1,0 +1,23 @@
+{
+  "$comment": "Config for the codex-delegation skill. Kill switch: set enabled=false. Env override for one session: CODEX_DELEGATION=0 (force off) or 1 (force on). artifact_dir is relative to the profile's scratch directory ($YBASE_SCRATCH).",
+  "enabled": true,
+  "artifact_dir": "codex",
+  "digest_lines": 40,
+  "sandbox": "read-only",
+  "model": null,
+  "profiles": {
+    "review":     { "enabled": true, "auto": true },
+    "critique":   { "enabled": true, "auto": true },
+    "docs":       { "enabled": true, "auto": true },
+    "plan":       { "enabled": true, "auto": true },
+    "brainstorm": { "enabled": true, "auto": false }
+  },
+  "thresholds": {
+    "$comment": "Auto-delegation fires when the measured size meets or exceeds the profile's threshold. Below it, Claude does the work locally. Raise to delegate less; set a profile's auto=false to require explicit invocation.",
+    "review_changed_lines": 400,
+    "review_changed_files": 8,
+    "critique_input_words": 600,
+    "docs_target_words": 800,
+    "plan_expected_tasks": 5
+  }
+}

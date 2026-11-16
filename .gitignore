@@ -1,0 +1,77 @@
+# Per-machine state: generated or private, never committed
+.ybase/
+tmp/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+wheels/
+pip-wheel-metadata/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+
+# Type checkers / linters
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environments / secrets
+.env
+.env.*
+!.env.example
+
+# Editors / OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Claude Code — per-user overrides (shared config stays tracked)
+.claude/settings.local.json
+
+# Git worktrees created by Claude Code sessions. These are embedded git repos:
+# `git add -A` records one as a gitlink with no .gitmodules entry and an absolute
+# local path in its .git pointer, so no other clone can populate it.
+.claude/worktrees/
+# Worktrees from `ybase wt`. The tool also writes this to the clone's own exclude file.
+.worktrees/
+
+# Agent transient workspaces (per AGENTS.md temporary workspace policy)
+.in/
+.out/
+
+# Personal editor state
+.obsidian/
+
+# Working documents (plans, drafts of a design). They name private things while
+# the work is in flight, so they stay untracked: a finished design goes to
+# docs/design/ once it names nothing private, and the rest to a knowledge base.
+docs/superpowers/

@@ -1,0 +1,26 @@
+[project]
+name = "ybase"
+version = "0.0.1"
+description = "YBase: a home repo for AI coding agents"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }  # PolyForm Noncommercial 1.0.0
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.5",
+]
+
+[tool.uv]
+# A workspace of scripts, not a package: nothing to build or install.
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "templates/research-topic"]
+norecursedirs = [".worktrees", ".venv", "tmp"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

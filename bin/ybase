@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+# ybase: the one entry point for setting up and operating this workspace.
+set -eu
+
+YB_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+export YB_ROOT
+T="$YB_ROOT/tools"
+
+# An optional local migration script; most clones do not have one.
+if [ -f "$T/legacy-rename.sh" ]; then /bin/bash "$T/legacy-rename.sh" "$YB_ROOT" || true; fi
+
+usage() {
+  cat <<'EOF'
+usage: ybase <command> [args]
+
+  setup [--profile P] [--parent-importer] [--non-interactive] [--kb PATH] [--repos-root PATH]
+                     one-time, idempotent setup for this machine; runs doctor.
+                     --non-interactive never prompts (the ci profile implies it)
+  doctor [--dry-run] probe and normalize this machine, write the .ybase/ files
+  profile            show the profile in force and where it came from
+  profile <name>     pin a profile on this machine (YBASE_PROFILE in .env)
+  profile --unpin    return to auto-detection
+  wt <kind>/<subject> [--repo NAME] [--base REF]
+                     create branch <kind>/<subject> in <repo>/.worktrees/, for YBase or, with
+                     --repo, for a managed repo; kinds: feat fix docs refactor test chore
+  wt done <kind>/<subject> [--repo NAME]
+                     remove that worktree and its branch once landed and nothing would be lost
+  worktrees [--all] [--json] [--findings] [--landing REF]... [--idle-days N] [--repo NAME|PATH] [--reap]
+                     inventory linked worktrees (--all: YBase and every managed repo); --findings judges unlanded work by content;
+                     --reap removes only the provably safe ones (tools/worktrees.py --help)
+  env                print shell exports for this profile: eval "$(ybase env)"
+  hooks install-user [--dry-run] [--remove]
+                     register the blocking Claude Code guards in the user's settings
+                     so sessions started outside this clone get them (tools/hooks_install.py)
+  kb                 list knowledge bases (primary first) and their state
+  kb init [PATH]     copy the KB skeleton into PATH (default: the primary), never overwriting
+  kb primary PATH    make PATH the KB that receives new content (runs init)
+  kb add PATH        add an additional KB; kb remove PATH takes one out
+  kb migrate [PATH] [--dry-run]  update a KB's layout to this YBase's version (default: the primary)
+  update [--apply]   show what the upstream has to offer; --apply fast-forwards, runs doctor,
+                     and lists pending KB layout steps (refuses on local changes or commits)
+  repos              list managed repos with their local paths and whether they are present
+  repos render       write .ybase/REPOS.md, the pointer file sessions load
+  repos path NAME    print a repo's local path; repos clone NAME clones it when absent
+  tools install      install the optional agent tooling that is missing (tools/setup-tools.sh)
+  tools update       update the optional agent tooling that is installed (tools/update-tools.sh)
+  check [args]       run the check registry (tools/checks.py --help)
+  publish [--dry-run] [--skip-tests]
+                     gate, then push a snapshot of HEAD to the public repository as a
+                     pull request (YBASE_PUBLIC_REPO; tools/publish.py --help)
+  absorb             cherry-pick public contributions onto the current branch
+EOF
+}
+
+cmd="${1:-help}"
+[ $# -gt 0 ] && shift
+case "$cmd" in
+  setup)    exec bash "$T/setup.sh" "$@" ;;
+  doctor)   exec bash "$T/doctor.sh" "$@" ;;
+  profile)  exec bash "$T/profile-cmd.sh" "$@" ;;
+  wt)       exec bash "$T/new-wt.sh" "$@" ;;
+  env)      exec bash "$T/env.sh" "$@" ;;
+  kb)       exec bash "$T/kb.sh" "$@" ;;
+  update)   exec bash "$T/update.sh" "$@" ;;
+  repos)    exec python3 "$T/repos.py" "$@" ;;
+  worktrees) exec python3 "$T/worktrees.py" "$@" ;;
+  hooks)    exec python3 "$T/hooks_install.py" "$@" ;;
+  tools)
+    sub="${1:-}"
+    [ $# -gt 0 ] && shift
+    case "$sub" in
+      install) exec bash "$T/setup-tools.sh" "$@" ;;
+      update)  exec bash "$T/update-tools.sh" "$@" ;;
+      *) echo "usage: ybase tools install|update" >&2; exit 2 ;;
+    esac ;;
+  check)    exec python3 "$T/checks.py" "$@" ;;
+  publish)  exec python3 "$T/publish.py" publish "$@" ;;
+  absorb)   exec python3 "$T/publish.py" absorb "$@" ;;
+  help|-h|--help) usage ;;
+  *) usage >&2; exit 2 ;;
+esac

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Runs the whole check registry. Enabled per clone by `ybase doctor`
+# (git config core.hooksPath .githooks).
+set -eu
+exec python3 "$(git rev-parse --show-toplevel)/tools/checks.py"

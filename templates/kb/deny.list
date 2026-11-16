@@ -1,0 +1,6 @@
+# Private terms the leak check must refuse, one Python regex per line.
+# This file lives in your knowledge base, which is never part of the framework's
+# history: a committed list of private terms would publish them.
+# Example lines (uncomment and edit):
+# (?i)\bmy-employer\b
+# internal-project-codename
